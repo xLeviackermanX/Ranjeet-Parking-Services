@@ -51,67 +51,76 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div style={{width:"100%", justifyContent: "center", overflowY: "scroll", overflowX: "hidden"}}>
-      <div style={{width:"100%", height: "600px",backgroundColor: "white", display: "flex", justifyContent: "center", overflowX: "hidden"}}>
-        <img alt="Ranjeet Parking Services" width="800px" height="100%" src={IMAGES.homePic}></img>
+    <div style={{width:"100%", justifyContent: "center", overflowY: "scroll", overflowX: "hidden"}} className="heading">
+      <div style={{width:"100%", height: "400px",backgroundColor: "white", display: "flex", justifyContent: "center", overflowX: "hidden"}}>
+        <img alt="Ranjeet Parking Services" width="100%" height="100%" src={IMAGES.homePic}></img>
       </div>
-      <div style={{display: "flex", justifyContent: "center", marginTop:"100px"}}>
-        <h1 style={{color: "blue"}}>
+      <div style={{display: "flex", justifyContent: "center", marginTop:"50px"}}>
+        <h1 style={{color: "#873e23"}}>
           Welcome to <Typewriter text="Ranjeet Parking Services...." delay={200} infinite />
         </h1>
       </div>
-      <div style={{display: "flex", justifyContent: "center"}}>
+      {/* <div style={{display: "flex", justifyContent: "center"}}>
         <img alt="for more information" width="50px" height="100px" src={IMAGES.scrollIcon}></img>
+      </div> */}
+      <h1 style={{color: "#873e23", marginTop: "100px", marginLeft: "45%"}}>Our Services</h1> 
+      <div style={{display: "flex", marginTop:"0px", width: "100%"}}>
+        <div class="col-4">
+          <Card
+            style={{
+              padding: "5px"
+            }}
+          >
+            <CardImg top width="100%" height="300px" src={IMAGES.parking} alt="Card image cap" />
+            <CardBody>
+              <CardTitle style={{ fontWeight: "bold" }}>ALL TYPE GOVT & PRIVATE PARKING SERVICE PROVIDER</CardTitle>
+              <CardText></CardText>
+            </CardBody>
+            {/* <CardFooter>
+              <small className="text-muted">Last updated 1 ago</small>
+            </CardFooter> */}
+          </Card>
+        </div>
+        <div class="col-4">
+          <Card
+            style={{
+              padding: "5px"
+            }}
+          >
+            <CardImg top width="100%" height="300px" src={IMAGES.driver} alt="Card image cap" />
+            <CardBody>
+              <CardTitle style={{ fontWeight: "bold" }}>DRIVERS PROVIDE ALL OVER INDIA</CardTitle>
+              <CardText></CardText>
+            </CardBody>
+            {/* <CardFooter>
+              <small className="text-muted">Last updated 1 ago</small>
+            </CardFooter> */}
+          </Card>
+        </div>
+        <div class="col-4">
+          <Card
+            style={{
+              padding: "5px"
+            }}
+          >
+            <CardImg top width="100%" height="300px" src={IMAGES.manpower} alt="Card image cap" />
+            <CardBody>
+              <CardTitle style={{ fontWeight: "bold" }}>ALL TYPE MAINPOWER PROVIDE IN INDIA</CardTitle>
+              <CardText></CardText>
+            </CardBody>
+            {/* <CardFooter>
+              <small className="text-muted">Last updated 1 ago</small>
+            </CardFooter> */}
+          </Card>
+        </div>
       </div>
-      <div style={{display: "flex", marginTop:"200px"}}>
-        <div class="col-4">
-          <Card
-            style={{
-              padding: "5px"
-            }}
-          >
-            <CardImg top width="100%" src={IMAGES.homePic} alt="Card image cap" />
-            <CardBody>
-              <CardTitle style={{ fontWeight: "bold" }}>3D</CardTitle>
-              <CardText>web application</CardText>
-            </CardBody>
-            <CardFooter>
-              <small className="text-muted">Last updated 1 ago</small>
-            </CardFooter>
-          </Card>
-        </div>
-        <div class="col-4">
-          <Card
-            style={{
-              padding: "5px"
-            }}
-          >
-            <CardImg top width="100%" src={IMAGES.homePic} alt="Card image cap" />
-            <CardBody>
-              <CardTitle style={{ fontWeight: "bold" }}>3D</CardTitle>
-              <CardText>web application</CardText>
-            </CardBody>
-            <CardFooter>
-              <small className="text-muted">Last updated 1 ago</small>
-            </CardFooter>
-          </Card>
-        </div>
-        <div class="col-4">
-          <Card
-            style={{
-              padding: "5px"
-            }}
-          >
-            <CardImg top width="100%" src={IMAGES.homePic} alt="Card image cap" />
-            <CardBody>
-              <CardTitle style={{ fontWeight: "bold" }}>3D</CardTitle>
-              <CardText>web application</CardText>
-            </CardBody>
-            <CardFooter>
-              <small className="text-muted">Last updated 1 ago</small>
-            </CardFooter>
-          </Card>
-        </div>
+      <div style={{marginTop: "100px", border: "solid black 2px", height: "250px"}}>
+      <h1 style={{color: "#873e23", marginTop: "40px", marginLeft: "45%"}}>CONTACT US</h1>
+      <ul style={{marginLeft: "30%"}}>
+          <li>Address: M/S PARKING SERVICES 609/73 SCHOOL BLOCK MANDAWALI FAZALPUR DELHI -110092</li>
+          <li>MOBILE NO: 9818352294, 8810544025</li>
+          <li>EMAIL ID: parkingservicesranjeet@gmail.com</li>
+      </ul> 
       </div>
     </div>
   )

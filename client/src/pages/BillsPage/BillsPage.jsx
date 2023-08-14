@@ -7,6 +7,7 @@ import { Notify } from "../../utils";
 import Typewriter from "../../components/AnimatedHeading/TypeWriter";
 import PdfViewer from '../../components/PdfViewer/PdfViewer';
 import ImageViewer from 'react-simple-image-viewer';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 // import { Worker } from '@react-pdf-viewer/core';
 import axios from "axios";
@@ -28,6 +29,8 @@ const BillsPage = () => {
   const [selectedYear1, setSelectedYear1] = useState(2023);
   const [bills, setBills] = useState([])
   const [fileToOpen, setFileToOpen] = useState([])
+  const [openFileUpload, setOpenFileUpload] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const navigate = useNavigate();
   const { auth } = AuthState();
@@ -67,6 +70,7 @@ const BillsPage = () => {
 
   const handleFormSubmittion = async (e)=> {
     e.preventDefault();
+    setIsLoading(true)
     const formData = new FormData();
     formData.append("file", uploadedFile);
     formData.append("month", selectedMonth);
@@ -79,6 +83,8 @@ const BillsPage = () => {
     catch(err){
       console.log("error is ",err)
     }
+    setSelectedMonth1(selectedMonth1)
+    setIsLoading(false);
   }
 
   function handleFileTitle (e) {
@@ -144,7 +150,7 @@ const BillsPage = () => {
     try{
       const formData = new FormData()
       formData.append("key", key)
-      const res = await axios.post('/api/upload/download', formData);
+      const res = await axios.post('https://ranjeetparkingservices.onrender.com/api/upload/download', formData);
       if(res.data && res.data.success){
         if(res.data.type[0]==="pdf"){
           navigate("/pdfviewer", {state: {data : "data:application/pdf;base64," + res.data.file, type: "pdf"}})
@@ -161,6 +167,12 @@ const BillsPage = () => {
     }
   }
 
+  const toggleOpenFileUpload = (e) => { 
+    e.preventDefault()
+    if(!openFileUpload)
+    setOpenFileUpload(!openFileUpload)
+  }
+
   useEffect(() => {
     fetchBills();
   }, [selectedMonth1, selectedYear1]);
@@ -175,16 +187,22 @@ const BillsPage = () => {
   };
 
   return (
-    <div style={{width:"100%", overflowY: "scroll", overflowX: "hidden", position: "relative"}}>
-      <div >
+    <div style={{width:"100%", overflowY: "scroll", overflowX: "hidden", backgroundColor: "white", marginTop: "3%"}}>
+      <div style={{border: "solid black 2px", padding: "5px", maxWidth: "100%",position: "relative", color: "#873e23"}} className='heading' onClick={toggleOpenFileUpload}>
       <div>
-        <h1 style={{color: "blue", position: "absolute", left:"40%", fontSize: "1.5rem"}}>
+        {
+          openFileUpload ? <h1 style={{position: "absolute", left:"45%", fontSize: "1.5vw"}}>
           Upload Bills
-        </h1>
+        </h1>: 
+        <h1 style={{position: "absolute", left:"40%", fontSize: "1.5vw"}}>
+        Click here to upload bills
+      </h1> 
+        }
       </div>
       <br />
       <br />
-      <div>
+      { openFileUpload ? 
+      <div style={{display: "flex", justifyContent: "center", width: "99%", overflowX:"scroll"}}>
       <form
         encType="multipart/form-data"
         onSubmit={handleFormSubmittion}
@@ -194,21 +212,22 @@ const BillsPage = () => {
           type="file"
           onChange={handleUploadedFile}
           required
-          style={{position: "absolute", left: "40%"}}
-        />
+          style={{position: "absolute", left:"43%"}}
+          accept="image/png, image/jpg, image/gif, image/jpeg, application/pdf"
+        /> 
         <br />
         <br />
-        <div style={{display: "flex"}}>
+        <div style={{display: "flex", position:"absolute", left: "40%"}}>
           <label>Month: </label> 
-          <select value={selectedMonth} onChange={handleChangeMonth}>
+          <select style={{marginLeft: "5%"}} value={selectedMonth} onChange={handleChangeMonth}>
             {months.map((option) => (
             
               <option value={option}>{option}</option>
             
             ))}
           </select>
-          <label style={{marginLeft: "100px"}}>Year: </label>
-          <select value={selectedYear} onChange={handleChangeYear}>
+          <label style={{marginLeft: "40px"}}>Year: </label>
+          <select style={{marginLeft: "5%"}} value={selectedYear} onChange={handleChangeYear}>
             {years.map((option) => (
             
               <option value={option}>{option}</option>
@@ -219,13 +238,14 @@ const BillsPage = () => {
         <br />
         <br />
 
-        <button type="submit">Submit Form</button>
+        <button style={{marginBottom: "10px"}} type="submit">Upload Bill</button>
       </form>
+      </div> : null
+      }
       </div>
-      </div>
-      <div>
-        <h2 style={{fontSize: "1.5rem", color:"blue", marginTop:"2%"}}>View Bills</h2>
-        <div style={{display: "flex"}}>
+      <div style={{overflowX: "scroll", color: "#873e23", marginTop: "60px"}} className='heading'>
+        <h2 style={{fontSize: "1.5vw", marginTop:"2%", marginLeft: "45%"}}>View Bills</h2>
+        <div style={{display: "flex", marginLeft: "40%"}}>
           <label>Month: </label> 
           <select value={selectedMonth1} onChange={handleChangeMonth1}>
             {months.map((option) => (
@@ -247,8 +267,8 @@ const BillsPage = () => {
         <ul>
           {bills.map(item => (
             <li key={item} style={{display: "flex"}}>
-            <Card style={{width: "90%", overflowX: "hidden", margin: "10px", height: "40px", padding: "0px", backgroundColor: "white"}}>
-            <button onClick={()=>{handleOpenFile(item);}} style={{border: "none", height: "100%", padding: "0px", backgroundColor: "white"}}>{item}</button>
+            <Card style={{width: "90%", overflowX: "hidden", margin: "10px", height: "40px", padding: "0px", backgroundColor: "#604B4E", color:"white"}}>
+            <button onClick={()=>{handleOpenFile(item);}} style={{border: "none", height: "100%", padding: "0px", backgroundColor: "#604B4E", color: "white"}}>{item}</button>
             </Card>
             <input
               type="image"

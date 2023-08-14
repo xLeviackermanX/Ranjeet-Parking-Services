@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "proxy": "http://localhost:5000",
+  "proxy": "https://ranjeetparkingservices.onrender.com",
   "private": true,
   "dependencies": {
     "@react-pdf-viewer/core": "^3.12.0",

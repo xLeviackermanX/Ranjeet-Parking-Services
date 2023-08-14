@@ -8,3 +8,9 @@
 .img {
     border-radius: 5px 5px 0 0;
 }
+
+.heading{
+  background: -webkit-linear-gradient(to right, #2ebf91, #8360c3);
+/* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #fcfcfc, #e58469);
+}
