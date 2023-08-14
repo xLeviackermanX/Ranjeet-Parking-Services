@@ -4,10 +4,6 @@ import { useNavigate } from "react-router-dom";
 import IMAGES from "../../assets"; // Importing images from single "IMAGES" object
 import { AuthState } from "../../context/AuthProvider";
 import { Notify } from "../../utils";
-import Typewriter from "../../components/AnimatedHeading/TypeWriter";
-import PdfViewer from '../../components/PdfViewer/PdfViewer';
-import ImageViewer from 'react-simple-image-viewer';
-import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 // import { Worker } from '@react-pdf-viewer/core';
 import axios from "axios";
@@ -188,15 +184,15 @@ const BillsPage = () => {
 
   return (
     <div style={{width:"100%", overflowY: "scroll", overflowX: "hidden", backgroundColor: "white", marginTop: "3%"}}>
-      <div style={{border: "solid black 2px", padding: "5px", maxWidth: "100%",position: "relative", color: "#873e23"}} className='heading' onClick={toggleOpenFileUpload}>
+      <div style={{border: "solid black 2px", padding: "5px", maxWidth: "100%",position: "relative", color: "#873e23"}} className='heading'>
       <div>
         {
           openFileUpload ? <h1 style={{position: "absolute", left:"45%", fontSize: "1.5vw"}}>
           Upload Bills
         </h1>: 
-        <h1 style={{position: "absolute", left:"40%", fontSize: "1.5vw"}}>
+        <button style={{border:"none", width: "100%", "height": "100%"}} onClick={toggleOpenFileUpload}><h1 style={{position: "absolute", left:"40%", fontSize: "1.5vw"}}>
         Click here to upload bills
-      </h1> 
+      </h1> </button>
         }
       </div>
       <br />
