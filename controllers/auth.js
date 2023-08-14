@@ -40,7 +40,7 @@ const register = async (req, res, next) => {
             profilePic,
           }
     );
-
+    res.header("Access-Control-Allow-Origin", "*");
     return sendAuth(user, 201, res);
   } catch (error) {
     return next(error);
@@ -70,7 +70,7 @@ const login = async (req, res, next) => {
     if (!isMatched) {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
-
+    res.header("Access-Control-Allow-Origin", "*");
     return sendAuth(user, 200, res);
   } catch (error) {
     return next(error);
@@ -85,7 +85,7 @@ const forgotPassword = async (req, res, next) => {
     const { email } = req.body;
 
     const user = await User.findOne({ email });
-
+    res.header("Access-Control-Allow-Origin", "*");
     if (!user) {
       return next(new ErrorResponse("Email could not be sent", 404));
     }
@@ -134,7 +134,7 @@ const forgotPassword = async (req, res, next) => {
 // @access          Public
 const resetPassword = async (req, res, next) => {
   const { password } = req.body;
-
+  res.header("Access-Control-Allow-Origin", "*");
   // Compare token in URL params to hashed token
   const resetPasswordToken = crypto
     .createHash("sha256")
@@ -169,6 +169,7 @@ const resetPassword = async (req, res, next) => {
 
 const sendAuth = (user, statusCode, res) => {
   console.log("user is ", user)
+  res.header("Access-Control-Allow-Origin", "*");
   return res.status(statusCode).json({
     success: true,
     name: user.name,
