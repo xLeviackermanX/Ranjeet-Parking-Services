@@ -19,6 +19,13 @@ app.use(cors({
   headers: ["Content-Type"],
   credentials: true,
 }));
+app.use(cors({
+  origin: "*",
+  headers: {
+      "Access-Control-Allow-Origin": "*", // incorrect
+      "Access-Control-Allow-Credentials": true // incorrect
+  },
+}));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/private", require("./routes/private"));
 app.use(fileupload());
