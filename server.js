@@ -16,7 +16,7 @@ connectDB(); // Connect to databse
 // API Routes
 app.use(cors({
   origin: "*",
-  headers: ["Content-Type"],
+  headers: ["Content-Type","Authorization"],
   credentials: true,
 }));
 app.use(cors({
