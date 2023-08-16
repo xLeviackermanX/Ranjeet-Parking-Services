@@ -14,9 +14,13 @@ app.use(express.json());
 connectDB(); // Connect to databse
 
 // API Routes
+app.use(cors({
+  origin: "*",
+  headers: ["Content-Type"],
+  credentials: true,
+}));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/private", require("./routes/private"));
-app.use(cors());
 app.use(fileupload());
 app.use(express.static("files"));
 app.use(bodyParser.json());
