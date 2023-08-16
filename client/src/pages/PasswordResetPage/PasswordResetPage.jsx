@@ -42,7 +42,7 @@ const PasswordResetPage = () => {
     }
 
     try {
-      const response = await fetch(`/api/auth/resetPassword/${resetToken}`, {
+      const response = await fetch(`https://ranjeetparkingservices.onrender.com/api/auth/resetPassword/${resetToken}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

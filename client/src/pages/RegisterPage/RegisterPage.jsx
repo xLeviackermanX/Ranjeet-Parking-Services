@@ -121,7 +121,7 @@ const RegisterPage = () => {
 
     try {
       // Register user
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch("https://ranjeetparkingservices.onrender.com/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

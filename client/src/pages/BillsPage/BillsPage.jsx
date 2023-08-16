@@ -73,7 +73,8 @@ const BillsPage = () => {
     formData.append("year", selectedYear);
     console.log("formData", formData)
     try {
-      const res = await axios.post('/api/upload', formData);
+      // const res = await axios.post('/api/upload', formData);
+      const res = await axios.post('https://ranjeetparkingservices.onrender.com/api/upload', formData);
       console.log("res is ", res)
     }
     catch(err){

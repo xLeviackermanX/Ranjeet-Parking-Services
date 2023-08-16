@@ -20,7 +20,7 @@ const ForgotPasswordScreen = () => {
     }
 
     try {
-      const response = await fetch("/api/auth/forgotPassword", {
+      const response = await fetch("https://ranjeetparkingservices.onrender.com/api/auth/forgotPassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

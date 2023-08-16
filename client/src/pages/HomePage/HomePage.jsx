@@ -21,7 +21,7 @@ const HomePage = () => {
 
   const fetchPrivateDate = async () => {
     try {
-      const response = await fetch("/api/private", {
+      const response = await fetch("https://ranjeetparkingservices.onrender.com/api/private", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
