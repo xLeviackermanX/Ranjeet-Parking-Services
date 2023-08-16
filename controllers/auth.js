@@ -41,6 +41,9 @@ const register = async (req, res, next) => {
           }
     );
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods",
+  "OPTIONS, GET, POST, PUT, PATCH, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     return sendAuth(user, 201, res);
   } catch (error) {
     return next(error);
@@ -71,6 +74,9 @@ const login = async (req, res, next) => {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods",
+  "OPTIONS, GET, POST, PUT, PATCH, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     return sendAuth(user, 200, res);
   } catch (error) {
     return next(error);
@@ -86,6 +92,9 @@ const forgotPassword = async (req, res, next) => {
 
     const user = await User.findOne({ email });
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods",
+  "OPTIONS, GET, POST, PUT, PATCH, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     if (!user) {
       return next(new ErrorResponse("Email could not be sent", 404));
     }
@@ -135,6 +144,9 @@ const forgotPassword = async (req, res, next) => {
 const resetPassword = async (req, res, next) => {
   const { password } = req.body;
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods",
+  "OPTIONS, GET, POST, PUT, PATCH, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   // Compare token in URL params to hashed token
   const resetPasswordToken = crypto
     .createHash("sha256")
@@ -170,6 +182,9 @@ const resetPassword = async (req, res, next) => {
 const sendAuth = (user, statusCode, res) => {
   console.log("user is ", user)
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods",
+  "OPTIONS, GET, POST, PUT, PATCH, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   return res.status(statusCode).json({
     success: true,
     name: user.name,

@@ -7,6 +7,9 @@ const upload = async (req, res, next) => {
         const month = req.body.month
         const year = req.body.year
         res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods",
+  "OPTIONS, GET, POST, PUT, PATCH, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
         var blob = req.files.file.data;
         var dataExists = await Data.findOne({ month: month, year:year }).exec();
         if (!dataExists) {
@@ -59,6 +62,9 @@ const upload = async (req, res, next) => {
     try {
         const key = req.body.key
         res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods",
+  "OPTIONS, GET, POST, PUT, PATCH, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
         const type = req.body.key.split(".").slice(-1)
         const params = {
             Bucket: process.env.S3_BUCKET,
