@@ -107,7 +107,7 @@ const BillsPage = () => {
 
   const fetchPrivateDate = async () => {
     try {
-      const response = await fetch("/api/private", {
+      const response = await fetch("https://ranjeetparkingservices.onrender.com/api/private", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -134,7 +134,7 @@ const BillsPage = () => {
       const formData = new FormData();
       formData.append("month", selectedMonth1);
       formData.append("year", selectedYear1);
-      const res = await axios.post('/api/upload/bills', formData);
+      const res = await axios.post('https://ranjeetparkingservices.onrender.com/api/upload/bills', formData);
       if(res.data && res.data.success){
         setBills(res.data.bills)
       }
