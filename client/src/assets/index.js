@@ -4,6 +4,7 @@ const IMAGES = {
   parking: require("./parking.avif"),
   logo: require("./logo.png"),
   homePic: require("./banner.jpeg"),
+  deleteIcon: require("./delete.png"),
   scrollIcon: require("./scrollIcon.png"),
   email: require("./email.svg").default,
   green_check: require("./green_check.svg").default, // Remember to use .default with SVG images

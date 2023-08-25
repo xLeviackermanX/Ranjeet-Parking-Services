@@ -6,6 +6,9 @@ const DataSchema = new mongoose.Schema(
       year: { type: String, required: [true, "Please provide a year"] },
       bills: {
         type: [String]
+      },
+      count: {
+        type: Number
       }
     },
     { timestamps: true }

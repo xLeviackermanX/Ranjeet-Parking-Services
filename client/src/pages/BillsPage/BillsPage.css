@@ -4,6 +4,19 @@
   background: linear-gradient(to right, #fcfcfc, #e58469);
 }
 
+@media only screen and (max-width: 600px) {
+  .selector {
+    left: 0% !important;
+    margin-left: 1% !important;
+  }
+  .prev-button{
+    margin-left: 1% !important;
+  }
+  table {
+    margin-left: 1% !important;
+  }
+}
+
 .custom-file-input::-webkit-file-upload-button {
     visibility: hidden;
   }

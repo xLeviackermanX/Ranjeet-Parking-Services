@@ -1,21 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import IMAGES from "../../assets"; // Importing images from single "IMAGES" object
 import { AuthState } from "../../context/AuthProvider";
 import { Notify } from "../../utils";
-
+import IMAGES from '../../assets';
 // import { Worker } from '@react-pdf-viewer/core';
 import axios from "axios";
-import {
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardFooter
-} from "reactstrap";
+
 // import PDFViewer from 'pdf-viewer-reactjs'
+
 import "./BillsPage.css"
 const BillsPage = () => {
   const [privateMessage, setPrivateMessage] = useState("");
@@ -32,6 +25,10 @@ const BillsPage = () => {
   const { auth } = AuthState();
   const [uploadedFile, setUploadedFile] = useState ('');
   const [fileTitle, setFileTitle] = useState ('');
+  const [curBills, setCurBills] = useState([])
+  const [page, setPage] = React.useState(0);
+  // total number of records 
+  const [count, setCount] = React.useState(0);
   const months = [
     "January",
     "Febuary",
@@ -44,7 +41,6 @@ const BillsPage = () => {
     "November",
     "December"
   ]
-
   var years = []
   var curYear = new Date().getFullYear()
   for(var i=curYear; i>=curYear-25; i--){
@@ -53,6 +49,22 @@ const BillsPage = () => {
 
   const handleChangeMonth = (e)=>{
     setSelectedMonth(e.target.value)
+  }
+  const prev = ()=>{
+    let low = (page-1)*5
+    let up = (page)*5>count?count: (page)*5
+    if(page>0){
+      setPage(page-1);
+      setCurBills(bills.slice(low,up))
+    }
+  }
+  const next = ()=>{
+      let up = (page+2)*5>count?count: (page+2)*5
+      let low = (page+1)*5
+      if(up>low){
+        setPage(page+1)
+        setCurBills(bills.slice(low,up))
+      }
   }
   const handleChangeYear = (e)=>{
     setSelectedYear(e.target.value)
@@ -66,7 +78,6 @@ const BillsPage = () => {
 
   const handleFormSubmittion = async (e)=> {
     e.preventDefault();
-    setIsLoading(true)
     const formData = new FormData();
     formData.append("file", uploadedFile);
     formData.append("month", selectedMonth);
@@ -74,14 +85,14 @@ const BillsPage = () => {
     console.log("formData", formData)
     try {
       // const res = await axios.post('/api/upload', formData);
-      const res = await axios.post('https://ranjeetparkingservices.onrender.com/api/upload', formData);
+      const res = await axios.post('http://65.2.188.171:5000/api/upload', formData);
       console.log("res is ", res)
     }
     catch(err){
       console.log("error is ",err)
     }
-    setSelectedMonth1(selectedMonth1)
-    setIsLoading(false);
+    await fetchBills();
+    return Notify("Bill uploaded successfully");
   }
 
   function handleFileTitle (e) {
@@ -107,7 +118,7 @@ const BillsPage = () => {
 
   const fetchPrivateDate = async () => {
     try {
-      const response = await fetch("https://ranjeetparkingservices.onrender.com/api/private", {
+      const response = await fetch("http://65.2.188.171:5000/api/private", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -134,9 +145,11 @@ const BillsPage = () => {
       const formData = new FormData();
       formData.append("month", selectedMonth1);
       formData.append("year", selectedYear1);
-      const res = await axios.post('https://ranjeetparkingservices.onrender.com/api/upload/bills', formData);
+      const res = await axios.post('http://65.2.188.171:5000/api/upload/bills', formData);
       if(res.data && res.data.success){
         setBills(res.data.bills)
+        setCount(res.data.bills.length)
+        setPage(0)
       }
     } catch (err){
       return Notify("Error in fetching bills", "error");
@@ -147,7 +160,7 @@ const BillsPage = () => {
     try{
       const formData = new FormData()
       formData.append("key", key)
-      const res = await axios.post('https://ranjeetparkingservices.onrender.com/api/upload/download', formData);
+      const res = await axios.post('http://65.2.188.171:5000/api/upload/download', formData);
       if(res.data && res.data.success){
         if(res.data.type[0]==="pdf"){
           navigate("/pdfviewer", {state: {data : "data:application/pdf;base64," + res.data.file, type: "pdf"}})
@@ -159,6 +172,28 @@ const BillsPage = () => {
             // setIsViewerOpen(true)
         }
       }
+    } catch(err) {
+      return Notify("Error in downloading the bill", "error")
+    }
+  }
+
+  const deleteBill = async (key) => {
+    try{
+      const formData = new FormData()
+      formData.append("key", key)
+      formData.append("month", selectedMonth1)
+      formData.append("year", selectedYear1)
+      const res = await axios.post('http://65.2.188.171:5000/api/upload/delete', formData);
+      if(res.data && res.data.success){
+          Notify("Successfully deleted the bill")
+          await fetchBills();
+        } else {
+          Notify("Could not delete the bill", "error")
+            // const blob = base64toBlob(res.data.file);
+            // const url = URL.createObjectURL(blob);
+            // setFileToOpen([url])
+            // setIsViewerOpen(true)
+        }
     } catch(err) {
       return Notify("Error in downloading the bill", "error")
     }
@@ -178,15 +213,25 @@ const BillsPage = () => {
     fetchPrivateDate();
   }, [])
 
+  useEffect(() =>{
+    let up = 5>count?count: 5
+    if(count===0){
+      setCurBills([])
+    }
+    else{
+      setCurBills(bills.slice(0,up))
+    }
+  },[bills])
+
   const closeImageViewer = () => {
     setFileToOpen([])
     setIsViewerOpen(false)
   };
-
+  console.log(selectedMonth1, bills, curBills)
   return (
-    <div style={{width:"100%", overflowY: "scroll", overflowX: "hidden", backgroundColor: "white", marginTop: "3%"}}>
-      <div style={{border: "solid black 2px", padding: "5px", maxWidth: "100%",position: "relative", color: "#873e23"}} className='heading'>
-      <div>
+    <div style={{width:"100%", overflowY: "scroll", overflowX: "hidden", marginTop: "3%"}}>
+      {auth.role && auth.role==="admin" ?<div style={{border: "solid black 2px", padding: "5px", maxWidth: "100%",position: "relative", color: "#873e23"}} className='heading'>
+       <div>
         {
           openFileUpload ? <h1 style={{position: "absolute", left:"45%", fontSize: "1.5vw"}}>
           Upload Bills
@@ -214,7 +259,7 @@ const BillsPage = () => {
         /> 
         <br />
         <br />
-        <div style={{display: "flex", position:"absolute", left: "40%"}}>
+        <div style={{display: "flex", position:"absolute", left: "40%"}} className='selector'>
           <label>Month: </label> 
           <select style={{marginLeft: "5%"}} value={selectedMonth} onChange={handleChangeMonth}>
             {months.map((option) => (
@@ -239,10 +284,10 @@ const BillsPage = () => {
       </form>
       </div> : null
       }
-      </div>
+      </div> : null}
       <div style={{overflowX: "scroll", color: "#873e23", marginTop: "60px"}} className='heading'>
         <h2 style={{fontSize: "1.5vw", marginTop:"2%", marginLeft: "45%"}}>View Bills</h2>
-        <div style={{display: "flex", marginLeft: "40%"}}>
+        <div style={{display: "flex", marginLeft: "40%"}} className='selector'>
           <label>Month: </label> 
           <select value={selectedMonth1} onChange={handleChangeMonth1}>
             {months.map((option) => (
@@ -260,12 +305,12 @@ const BillsPage = () => {
             ))}
           </select>
         </div>
-        <div style={{margin: "20px", width: "98%", height: "600px", overflowY: "scroll", border: "solid black 2px"}}>
+        {/* <div style={{margin: "20px", width: "98%", height: "600px", overflowY: "scroll", border: "solid black 2px"}}>
         <ul>
           {bills.map(item => (
             <li key={item} style={{display: "flex"}}>
             <Card style={{width: "90%", overflowX: "hidden", margin: "10px", height: "40px", padding: "0px", backgroundColor: "#604B4E", color:"white"}}>
-            <button onClick={()=>{handleOpenFile(item);}} style={{border: "none", height: "100%", padding: "0px", backgroundColor: "#604B4E", color: "white"}}>{item}</button>
+            <button onClick={()=>{handleOpenFile(item);}} style={{border: "none", height: "100%", padding: "0px", backgroundColor: "#604B4E", color: "white", fontSize:"1.5vw"}}>{item}</button>
             </Card>
             <input
               type="image"
@@ -276,8 +321,41 @@ const BillsPage = () => {
             </li>
           ))}
         </ul>
-        </div>
-      </div>
+        </div> */}
+        <table style={{marginLeft: "35%", height: "400px"}}>
+          <thead>
+            <tr>
+              <th style={{padding:"15px", border: "solid black 2px", width: "40px"}}>{}</th>
+              <th style={{padding:"15px", border: "solid black 2px", width: "450px"}}>File Name</th>
+              <th style={{padding:"15px", border: "solid black 2px", width: "100px"}}>Link</th>
+              {auth.role==="admin" ? <th style={{padding:"15px", border: "solid black 2px", width: "60px"}}>Delete</th>: null}
+            </tr>
+          </thead>
+          <tbody>
+            {curBills.map((bill, index) => {
+              return (
+                <tr>
+                  <td style={{padding:"15px", border: "solid black 2px"}}>{index+page*5}</td>
+                  <td style={{padding:"15px", border: "solid black 2px"}}>{bill}</td>
+                  <td style={{padding:"15px", border: "solid black 2px"}}><button onClick={()=>{handleOpenFile(bill);}} style={{border: "none", height: "100%", padding: "0px", background: "none", color: "blue"}}>Open</button></td>
+                  {auth.role==="admin" ?<td style={{padding:"15px", border: "solid black 2px"}}> <input onClick={()=>{deleteBill(bill)}} type="image" src={IMAGES.deleteIcon} style={{width: "15px", height: "15px"}} alt="delete"/></td>: null}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <button
+        onClick={prev} className="prev-button" style={{marginLeft:"35%", width: "70px"}}
+      >
+        previous
+      </button>
+      <button
+        onClick={next} style={{marginLeft:"2px", width: "70px"}}
+      >
+        next
+      </button>
+      Page: {page+1} out of {count%5===0 ? count/5 : parseInt(count/5)+1}
+      </div> 
       {/* {fileToOpen ? 
        <PdfViewer data={fileToOpen}/>: null  
     } */}

@@ -21,7 +21,7 @@ const HomePage = () => {
 
   const fetchPrivateDate = async () => {
     try {
-      const response = await fetch("https://ranjeetparkingservices.onrender.com/api/private", {
+      const response = await fetch("http://65.2.188.171:5000/api/private", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const HomePage = () => {
       {/* <div style={{display: "flex", justifyContent: "center"}}>
         <img alt="for more information" width="50px" height="100px" src={IMAGES.scrollIcon}></img>
       </div> */}
-      <h1 style={{color: "#873e23", marginTop: "100px", marginLeft: "45%"}}>Our Services</h1> 
+      <h1 style={{color: "#873e23", marginTop: "100px", marginLeft: "45%", fontSize:"3vw"}}>Our Services</h1> 
       <div style={{display: "flex", marginTop:"0px", width: "100%"}}>
         <div class="col-4">
           <Card
@@ -72,8 +72,8 @@ const HomePage = () => {
             }}
           >
             <CardImg top width="100%" height="300px" src={IMAGES.parking} alt="Card image cap" />
-            <CardBody>
-              <CardTitle style={{ fontWeight: "bold" }}>ALL TYPE GOVT & PRIVATE PARKING SERVICE PROVIDER</CardTitle>
+            <CardBody style={{height: "100px"}}>
+              <CardTitle style={{ fontWeight: "bold",fontSize:"2vw" }}>GOVT & PRIVATE PARKING SERVICE PROVIDER</CardTitle>
               <CardText></CardText>
             </CardBody>
             {/* <CardFooter>
@@ -88,8 +88,8 @@ const HomePage = () => {
             }}
           >
             <CardImg top width="100%" height="300px" src={IMAGES.driver} alt="Card image cap" />
-            <CardBody>
-              <CardTitle style={{ fontWeight: "bold" }}>DRIVERS PROVIDE ALL OVER INDIA</CardTitle>
+            <CardBody style={{height: "100px"}}>
+              <CardTitle style={{ fontWeight: "bold", fontSize:"1.7vw" }}>DRIVERS PROVIDE ALL OVER INDIA</CardTitle>
               <CardText></CardText>
             </CardBody>
             {/* <CardFooter>
@@ -104,8 +104,8 @@ const HomePage = () => {
             }}
           >
             <CardImg top width="100%" height="300px" src={IMAGES.manpower} alt="Card image cap" />
-            <CardBody>
-              <CardTitle style={{ fontWeight: "bold" }}>ALL TYPE MAINPOWER PROVIDE IN INDIA</CardTitle>
+            <CardBody style={{height: "100px"}}>
+              <CardTitle style={{ fontWeight: "bold",fontSize:"1.7vw" }}>MANPOWER PROVIDE IN INDIA</CardTitle>
               <CardText></CardText>
             </CardBody>
             {/* <CardFooter>
@@ -114,9 +114,9 @@ const HomePage = () => {
           </Card>
         </div>
       </div>
-      <div style={{marginTop: "100px", border: "solid black 2px", height: "250px"}}>
-      <h1 style={{color: "#873e23", marginTop: "40px", marginLeft: "45%"}}>CONTACT US</h1>
-      <ul style={{marginLeft: "30%"}}>
+      <div style={{marginTop: "100px", border: "solid black 2px", height: "350px"}}>
+      <h1 style={{color: "#873e23", marginTop: "40px", marginLeft: "45%", fontSize:"3vw"}}>CONTACT US</h1>
+      <ul style={{marginLeft: "20%", fontSize: "1.7vw"}}>
           <li>Address: M/S PARKING SERVICES 609/73 SCHOOL BLOCK MANDAWALI FAZALPUR DELHI -110092</li>
           <li>MOBILE NO: 9818352294, 8810544025</li>
           <li>EMAIL ID: parkingservicesranjeet@gmail.com</li>
